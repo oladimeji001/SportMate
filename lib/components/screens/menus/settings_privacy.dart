@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/chg_pass.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/logout.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/updemail.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/updusername.dart';
 
 class Settings extends StatelessWidget {
   Settings({super.key});
 
-  final List settings_items = const [
-    SettingItems('Change Password', ''),
-    SettingItems('Update Username', ''),
-    SettingItems('Update Email', ''),
-    SettingItems('Logout', '')
+  final List setting_items = const [
+    SettingItems('Change Password', ChangePassword()),
+    SettingItems('Update Username', UpdateUser()),
+    SettingItems('Update Email', UpdateEmail()),
+    SettingItems('Logout', LogOut())
   ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: settings_items.length,
+    return ListView.builder(
+      itemCount: setting_items.length,
       itemBuilder: (context, int index) => ListTile(
-        tileColor: settings_items[index].title == 'Logout' ? Colors.red : Colors.lightBlueAccent,
         onTap: () {
-          Navigator.pushNamed(context,
-              settings_items[index].direction);
+          Navigator.pushNamed(context, setting_items[index].direction);
         },
-        title: Text(settings_items[index].title),
+        title: Text(setting_items[index].title),
       ),
-      separatorBuilder: (context, index) => const Divider(thickness: 2,),
+      //separatorBuilder: (context, index) => const Divider(thickness: 2,),
     );
   }
 }

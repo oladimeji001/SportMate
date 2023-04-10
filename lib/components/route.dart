@@ -4,4 +4,5 @@ class sportRoute{
   static String register = '/register';
   static String login = '/log_in';
   static String interests = '/interests';
+  static String forgot_pass = '/passreset';
 }

@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/screens/forget_pass.dart';
 import 'package:sportmate/components/screens/main_menu.dart';
 import 'package:sportmate/components/screens/start_menu.dart';
 import './components/route.dart';
+import 'components/screens/interests.dart';
 import 'components/screens/login.dart';
 import 'components/screens/register.dart';
 
 void main() {
-  runApp(const ProviderScope(child: Sportmate()));
+  runApp(const ProviderScope(child: Origin()));
 }
+class Origin extends StatefulWidget{
 
-class Sportmate extends StatelessWidget {
-  const Sportmate({Key? key}) : super(key: key);
+  const Origin({Key? key}) : super(key: key);
+
+  @override
+  State createState()=> Sportmate();
+}
+class Sportmate extends State {
+
+  @override
+  void initState(){
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.blueAccent),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           elevation: 5,
             backgroundColor: Colors.black),
@@ -47,7 +60,9 @@ class Sportmate extends StatelessWidget {
         sportRoute.start: (context) => const StartMenu(),
         sportRoute.login: (context) => const Login(),
         sportRoute.register: (context) => const Register(),
-        sportRoute.main_menu: (context) => const MainMenu()
+        sportRoute.main_menu: (context) => const MainMenu(),
+        sportRoute.interests: (context) => const Interest(),
+        sportRoute.forgot_pass: (context) => const Pass()
       },
       initialRoute: sportRoute.start,
     );

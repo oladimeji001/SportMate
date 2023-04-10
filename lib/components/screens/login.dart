@@ -122,7 +122,7 @@ class LoginState extends ConsumerState {
               Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: InkWell(
-                      onTap: () {},
+                      onTap: () => Navigator.pushNamed(context, sportRoute.forgot_pass),
                       child: const Text(
                         'Forget Password?',
                         style: TextStyle(fontSize: 16),
