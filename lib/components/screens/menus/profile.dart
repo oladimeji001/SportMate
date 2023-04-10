@@ -28,7 +28,7 @@ class Profile extends StatelessWidget {
   List profile = [
     const ProfileItems('Username', 'oladimeji001', Icons.person),
     const ProfileItems('Phone', '+234 8145304272', Icons.phone),
-    ProfileItems('Interests', interests[0], Icons.interests)
+    ProfileItems('Interests', interests.join(' '), Icons.interests)
   ];
 
   @override

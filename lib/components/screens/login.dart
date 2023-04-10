@@ -110,9 +110,6 @@ class LoginState extends ConsumerState {
                                 if (content!.isEmpty){
                                   return "Password field can not be empty";
                                 }
-                                else if (content!.length < 8){
-                                  return "Password must not be less than eight characters";
-                                }
                                 return null;
                             }
                             ),

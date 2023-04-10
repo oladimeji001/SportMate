@@ -13,11 +13,15 @@ class Register extends ConsumerStatefulWidget {
 }
 
 class RegisterState extends ConsumerState<Register> {
+
+  late final TextEditingController _pass;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final formSizeH = size.height * 0.06;
     final formSizeW = size.width;
+
+    _pass = TextEditingController();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -47,19 +51,24 @@ class RegisterState extends ConsumerState<Register> {
           ),
           Form(
               child: Wrap(children: [
-            generalForm('Full Name', formSizeW, formSizeH, icons: Icons.account_circle_outlined),
-            generalForm('Create Username', formSizeW, formSizeH, icons: Icons.person),
-            generalForm('E-mail', formSizeW, formSizeH, icons: Icons.email_outlined),
-            generalForm('Phone Number', formSizeW, formSizeH, icons: Icons.phone),
-            passwordForm('Create Password'),
-            passwordForm('Confirm Password'),
+            generalForm('Full Name', formSizeW, formSizeH,
+                icons: Icons.account_circle_outlined),
+            generalForm('Create Username', formSizeW, formSizeH,
+                icons: Icons.person),
+            generalForm('E-mail', formSizeW, formSizeH,
+                icons: Icons.email_outlined),
+            generalForm('Phone Number', formSizeW, formSizeH,
+                icons: Icons.phone),
+            passwordForm('Create Password', contR: _pass), //TextEditingController passed to this field
+            passwordForm('Confirm Password', verify: _pass), //TextEditingController to match passwords
           ])),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
             width: size.width * 0.382,
             height: size.height * 0.06,
             child: ElevatedButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/verify'),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/verify'),
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),
@@ -68,12 +77,13 @@ class RegisterState extends ConsumerState<Register> {
         ])));
   }
 
-  Widget passwordForm(String label) {
+  Widget passwordForm(String label, {TextEditingController? contR, TextEditingController? verify}) {
     return Padding(
         padding: const EdgeInsets.all(10.0),
         child: ConstrainedBox(
             constraints: BoxConstraints.tight(const Size(400, 50)),
             child: TextFormField(
+              controller: contR,
               style: const TextStyle(
                   color: Colors.indigo, fontWeight: FontWeight.w600),
               decoration: InputDecoration(
@@ -108,7 +118,19 @@ class RegisterState extends ConsumerState<Register> {
                   )),
               obscureText: !showText,
               maxLines: 1,
-              validator: (String? content) {},
+              validator: (String? content) {
+                if (content!.isEmpty) {
+                  return "Password field can not be empty";
+                } else if (content!.length < 8) {
+                  return "Password must not be less than eight characters";
+                }
+                else if (label == 'Confirm Password'){
+                  if (content != verify?.text){
+                    return 'Password don\'t match';
+                  }
+                }
+                return null;
+              },
             )));
   }
 }
