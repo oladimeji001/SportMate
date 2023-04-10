@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/route.dart';
 import 'package:sportmate/components/utils/formfield.dart';
+import 'package:sportmate/components/utils/header.dart';
 
 bool showText = false;
-final formProvider = Provider((ref) => showText);
 class Login extends ConsumerStatefulWidget{
-
   const Login({super.key});
 
   @override
@@ -17,8 +16,10 @@ class LoginState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final formSizeH = size.height * 0.06;
+    final formSizeW = size.width;
     final formKey = GlobalKey<FormState>();
-    var formS = ref.watch(formProvider);
+    final isPhone = false;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -41,26 +42,7 @@ class LoginState extends ConsumerState {
                           color: Colors.blueAccent,
                         ),
                       )),
-                  Container(
-                      alignment: Alignment.topRight,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.height * 0.024),
-                      child: RichText(
-                        text: const TextSpan(
-                            text: 'Sport',
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                  text: 'Mate',
-                                  style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600))
-                            ]),
-                      ))
+                 sportMateHeader(size),
                 ],
               ),
               Container(
@@ -86,23 +68,17 @@ class LoginState extends ConsumerState {
               Form(
                   //key: formKey,
                   child: Wrap(children: [
+                    generalForm('E-mail', formSizeW, formSizeH, icons: Icons.email_outlined),
                     Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: ConstrainedBox(
                             constraints:
-                                BoxConstraints.tight(const Size(400, 50)),
-                            child:  TextField(
-                                decoration: generalFormfield('E-mail')
-                            ))),
-                    Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tight(const Size(400, 50)),
-                            child: TextField(
+                                BoxConstraints.tight(Size(formSizeW, formSizeH)),
+                            child: TextFormField(
+                              style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
                                     labelText: 'Password',
-                                    labelStyle: const TextStyle(color: Colors.blueAccent),
+                                    labelStyle: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.normal),
                                     floatingLabelBehavior: FloatingLabelBehavior.never,
                                     border: const OutlineInputBorder(
                                         borderSide: BorderSide(color: Colors.blueGrey)),
@@ -118,16 +94,29 @@ class LoginState extends ConsumerState {
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        Icons.remove_red_eye_outlined,
-                                        color: showText ? Colors.red : Colors.blueAccent,
+                                        showText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                        color: Colors.blueAccent ,
                                       ),
+
                                       onPressed: () {
                                         setState(() {
                                           showText = !showText;
                                         });
                                       },
-                                    ))
-                            )))
+                                    )),
+                              obscureText: !showText,
+                              maxLines: 1,
+                            validator: (String? content){
+                                if (content!.isEmpty){
+                                  return "Password field can not be empty";
+                                }
+                                else if (content!.length < 8){
+                                  return "Password must not be less than eight characters";
+                                }
+                                return null;
+                            }
+                            ),
+                        ))
 
                   ])),
               Padding(
@@ -142,7 +131,7 @@ class LoginState extends ConsumerState {
                 width: size.width * 0.382,
                 height: size.height * 0.06,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushNamed(sportRoute.main_menu),
                     child: const Text(
                       'Log in',
                       style: TextStyle(color: Colors.white, fontSize: 20),

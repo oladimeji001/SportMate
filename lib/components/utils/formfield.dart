@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+//import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../screens/login.dart';
 
+Widget generalForm(String label, double formSizeW, double formSizeH,{IconData? icons}){
+  return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: ConstrainedBox(
+          constraints:
+          BoxConstraints.tight(Size(formSizeW, formSizeH )),
+          child:  TextFormField(
+            style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600),
+            decoration: generalFormDecoration(label, icons: icons),
+            maxLines: 1,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (String? content){
+              if (content!.isEmpty) {
+                return '$label field can not be empty';
+              }
+              else if (label == 'E-mail'){
+                if ((!content.endsWith('.com'))){// || (!content.endsWith('@yahoo.com')) || (!content.endsWith('@gmail.com'))){
+                  return 'Please enter a valid email address';
+                }
+              }
+              return null;
+            }
+          )));
+}
 
-InputDecoration generalFormfield(String labelText) {
+InputDecoration generalFormDecoration(String labelText, {IconData? icons}) {
   return InputDecoration(
-
       labelText: labelText,
-      labelStyle: const TextStyle(color: Colors.blueAccent),
+      labelStyle: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.normal),
       floatingLabelBehavior: FloatingLabelBehavior.never,
+      prefixIcon: Icon(icons, color: Colors.blueAccent,),
       border: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey)),
       focusedBorder: const OutlineInputBorder(
@@ -20,7 +44,7 @@ InputDecoration generalFormfield(String labelText) {
           borderSide: BorderSide(color: Colors.blueGrey)));
 }
 
-InputDecoration passwordFormfield(bool isTap) {
+InputDecoration passwordFormfield(bool isTap, set) {
   return InputDecoration(
       labelText: 'Password',
       labelStyle: const TextStyle(color: Colors.blueAccent),
