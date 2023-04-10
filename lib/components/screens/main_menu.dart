@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'menus/profile.dart';
 import 'menus/settings_privacy.dart';
 
@@ -19,47 +18,62 @@ class _MainMenuState extends ConsumerState<MainMenu> {
   Widget build(BuildContext context) {
     final TextStyle? optionStyle = Theme.of(context).textTheme.displayMedium;
 
-    final List<Map<String, Widget>> widgetOptions = <Map<String, Widget>>[
-      {
-        'Discover': Text('Discover Menu', style: optionStyle,
-        )
-      },
-      {
-        'Buddies': Text('Buddies Menu', style: optionStyle)
-      },
-      {
-        'Profile': const Profile()
-      },
-      {
-        'Settings & Privacy': const Settings()
-      }
+    final bottomBarItems = [
+      MyTabItem(
+          'Discover',
+          Icons.wifi_tethering_outlined,
+          Text(
+            'Discover Menu',
+            style: optionStyle,
+          )),
+      MyTabItem(
+          'Buddies',
+          Icons.group_outlined,
+          Text(
+            'Buddies Menu',
+            style: optionStyle,
+          )),
+      MyTabItem('Profile', Icons.person, Profile()),
+      MyTabItem('Settings & Privacy', Icons.settings, Settings()),
     ];
 
     final itemIndex = ref.watch(_onItemTapped);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widgetOptions[_selectedIndex].keys as String)),
+      appBar: AppBar(
+         automaticallyImplyLeading: false,
+          backgroundColor: Colors.blueAccent,
+          titleSpacing: 30,
+          title: Text(bottomBarItems[_selectedIndex].title)),
       body: Center(
-          child: widgetOptions[_selectedIndex][widgetOptions[_selectedIndex]
-              .keys]), //Selects Widget from dictionary value stored in itemIndex list
+          child: bottomBarItems[_selectedIndex]
+              .direction), //Selects Widget from dictionary value stored in itemIndex list
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.broadcast_on_home_outlined), label: 'Discover'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.group_outlined), label: 'Buddies'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings & Privacy')
-        ],
+        showUnselectedLabels: true,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.indigo,
+        currentIndex: _selectedIndex,
+        type: BottomNavigationBarType.shifting,
+        items: bottomBarItems
+            .map((items) => BottomNavigationBarItem(
+                label: items.title,
+                backgroundColor: Colors.blueAccent,
+                icon: Icon(items.icon,)))
+            .toList(),
         onTap: (index) {
-          _selectedIndex = index;
+          setState(() {
+            _selectedIndex = index;
+          });
         },
-        currentIndex: itemIndex,
-        selectedItemColor: Colors.lightGreen,
-        backgroundColor: Colors.lime,
       ),
     );
   }
+}
+
+class MyTabItem {
+  final String title;
+  final IconData icon;
+  final Widget direction;
+
+  const MyTabItem(this.title, this.icon, this.direction);
 }
