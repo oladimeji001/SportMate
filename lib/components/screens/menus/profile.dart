@@ -1,29 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:sportmate/components/screens/interests.dart';
 
 class Profile extends StatelessWidget {
   Profile();
   String userName = 'John Mac';
-  String about = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
-  static const double _fillStopBlue2 = 54.93 /100;
-  static const double _fillStopOffWhite = 15.27 /100;
+  static const double _fillStopBlue2 = 54.93 / 100;
+  static const double _fillStopOffWhite = 15.27 / 100;
 
-  static const List<double> _linearWhiteStops = [ 0.0, _fillStopOffWhite,  _fillStopBlue2];
+  static const List<double> _linearWhiteStops = [
+    0.0,
+    _fillStopOffWhite,
+    _fillStopBlue2
+  ];
 
   static const Color _offWhite = Color(0xFFF3F6FF);
   static const Color _blue2 = Color(0xFF96A7D0);
 
   static const List<Color> _linearWhite = [Colors.white, _offWhite, _blue2];
 
-  static const Gradient _linearWhiteGradient = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,stops: _linearWhiteStops,colors: _linearWhite);
+  static const Gradient _linearWhiteGradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: _linearWhiteStops,
+      colors: _linearWhite);
 
+  List profile = [
+    const ProfileItems('Username', 'oladimeji001', Icons.person),
+    const ProfileItems('Phone', '+234 8145304272', Icons.phone),
+    ProfileItems('Interests', interests[0], Icons.interests)
+  ];
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Stack(children: [
+        child: Column(
+      children: [
+        const UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: Colors.redAccent),
+            currentAccountPicture: CircleAvatar(
+              foregroundImage: AssetImage('assets/images/Ellipse 11.png'),
+            ),
+            accountName: Text('Oladimeji Michael'),
+            accountEmail: Text('opeyemioladimeji.m@gmail.com')),
+        ListView.builder(
+            itemCount: profile.length, itemBuilder: (context, int index) {
+              final select = profile[index];
+              return ListTile(leading: select.icon, title: select.title, subtitle: select.detail);
+        })
+      ],
+    ));
+  }
+}
+
+class ProfileItems {
+  final title;
+  final detail;
+  final icon;
+
+  const ProfileItems(this.title, this.detail, this.icon);
+}
+
+/*Stack(children: [
             const Positioned(
               child: SizedBox(
                 width: 428,
@@ -64,9 +102,4 @@ class Profile extends StatelessWidget {
                             style: const TextStyle(fontSize: 12),
                           ))
                     ])),
-          ])
-        ],
-      ),
-    );
-  }
-}
+          ])*/

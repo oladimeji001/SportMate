@@ -48,6 +48,7 @@ class RegisterState extends ConsumerState<Register> {
           Form(
               child: Wrap(children: [
             generalForm('Full Name', formSizeW, formSizeH, icons: Icons.account_circle_outlined),
+            generalForm('Create Username', formSizeW, formSizeH, icons: Icons.person),
             generalForm('E-mail', formSizeW, formSizeH, icons: Icons.email_outlined),
             generalForm('Phone Number', formSizeW, formSizeH, icons: Icons.phone),
             passwordForm('Create Password'),
@@ -58,7 +59,7 @@ class RegisterState extends ConsumerState<Register> {
             width: size.width * 0.382,
             height: size.height * 0.06,
             child: ElevatedButton(
-                onPressed: () => null,
+                onPressed: () => Navigator.pushReplacementNamed(context, '/verify'),
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),
