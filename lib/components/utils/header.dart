@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget sportMateHeader(var size){
-  double value = size.height * 0.024;
+  double value = 20;
   return Container(
       alignment: Alignment.topRight,
       padding:

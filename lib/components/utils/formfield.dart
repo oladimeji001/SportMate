@@ -12,7 +12,7 @@ Widget otpForm() {
 }
 
 Widget generalForm(String label, double formSizeW, double formSizeH,
-    {IconData? icons, int? maxLength, double? cursorHeight}) {
+    {IconData? icons, int? maxLength, double? cursorHeight, TextEditingController? controller}) {
   return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ConstrainedBox(

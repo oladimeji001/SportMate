@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-bool _showText = false;
+bool _showText1 = false;
+bool _showText2 = false;
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -10,10 +11,12 @@ class ChangePassword extends StatefulWidget {
 }
 
 class ChangePasswordState extends State {
+  TextEditingController passcontroller1 = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
+    final formSizeW = size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,8 +29,110 @@ class ChangePasswordState extends State {
       ),
       body: SingleChildScrollView(child: Column(
         children: [
-          passwordForm('Create new password'),
-          passwordForm('Confirm password'),
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ConstrainedBox(
+                  constraints: BoxConstraints.tight(Size(formSizeW, 50)),
+                  child: TextFormField(
+                    controller: passcontroller1,
+                    style: const TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                        labelText: 'Create Password',
+                        labelStyle: const TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.normal),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueGrey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueAccent)),
+                        errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red)),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueGrey)),
+                        icon: const Icon(
+                          Icons.lock_outline,
+                          color: Colors.blueAccent,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _showText1
+                                ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                            color: Colors.blueAccent,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showText1 = !_showText1;
+                            });
+                          },
+                        )),
+                    obscureText: !_showText1,
+                    maxLines: 1,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (String? content) {
+                      if (content!.isEmpty) {
+                        return "Password field can not be empty";
+                      } else if (content.length < 8) {
+                        return "Password must not be less than eight characters";
+                      }
+                      return null;
+                    },
+                    onChanged: (content) {
+                    },
+                  ))),
+          Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ConstrainedBox(
+                  constraints: BoxConstraints.tight( Size(formSizeW, 50)),
+                  child: TextFormField(
+                    style: const TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: const TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.normal),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueGrey)),
+                        focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueAccent)),
+                        errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red)),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blueGrey)),
+                        icon: const Icon(
+                          Icons.lock_outline,
+                          color: Colors.blueAccent,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _showText2
+                                ?
+                            Icons.visibility_outlined :Icons.visibility_off_outlined,
+                            color: Colors.blueAccent,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showText2 = !_showText2;
+                            });
+                          },
+                        )),
+                    obscureText: !_showText2,
+                    maxLines: 1,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (String? content) {
+                      if (content!.isEmpty) {
+                        return "Password field can not be empty";
+                      } else if (content.length < 8) {
+                        return "Password must not be less than eight characters";
+                      } else if (content != passcontroller1.text) {
+                        return 'Password don\'t match';
+                      }
+                      return null;
+                    },
+                  ))),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
             width: 150,
@@ -42,49 +147,5 @@ class ChangePasswordState extends State {
         ],
       ),
     ));
-  }
-
-  Widget passwordForm(String label) {
-    return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ConstrainedBox(
-            constraints: BoxConstraints.tight(const Size(400, 50)),
-            child: TextFormField(
-              style: const TextStyle(
-                  color: Colors.indigo, fontWeight: FontWeight.w600),
-              decoration: InputDecoration(
-                  labelText: label,
-                  labelStyle: const TextStyle(
-                      color: Colors.blueAccent, fontWeight: FontWeight.normal),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey)),
-                  focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueAccent)),
-                  errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red)),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey)),
-                  prefixIcon: const Icon(
-                    Icons.lock_outline,
-                    color: Colors.blueAccent,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _showText
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: Colors.blueAccent,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _showText = !_showText;
-                      });
-                    },
-                  )),
-              obscureText: !_showText,
-              maxLines: 1,
-              validator: (String? content) {},
-            )));
   }
 }

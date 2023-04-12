@@ -4,8 +4,8 @@ import 'package:sportmate/components/utils/header.dart';
 
 import '../utils/formfield.dart';
 
-bool showText1 = false;
-bool showText2 = false;
+bool _showText1 = false;
+bool _showText2 = false;
 
 class Register extends ConsumerStatefulWidget {
   const Register({super.key});
@@ -15,8 +15,9 @@ class Register extends ConsumerStatefulWidget {
 
 class RegisterState extends ConsumerState<Register> {
 
-  TextEditingController passcontroller2 = TextEditingController();
   TextEditingController passcontroller1 = TextEditingController();
+  TextEditingController passcontroller2 = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -49,23 +50,23 @@ class RegisterState extends ConsumerState<Register> {
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Fill in your details',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
           Form(
               child: Wrap(children: [
-            generalForm('First Name', formSizeW, formSizeH,
+            generalForm('First Name', formSizeW, 50,
                 icons: Icons.account_circle_outlined),
-            generalForm('Last Name', formSizeW, formSizeH,
+            generalForm('Last Name', formSizeW, 50,
                 icons: Icons.person),
-            generalForm('E-mail', formSizeW, formSizeH,
+            generalForm('E-mail', formSizeW, 50,
                 icons: Icons.email_outlined),
-            generalForm('Phone Number', formSizeW, formSizeH,
+            generalForm('Phone Number', formSizeW, 50,
                 icons: Icons.phone),
             Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(400, 50)),
+                    constraints: BoxConstraints.tight(Size(formSizeW, 50)),
                     child: TextFormField(
                       controller: passcontroller1,
                       style: const TextStyle(
@@ -90,17 +91,17 @@ class RegisterState extends ConsumerState<Register> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              showText1
+                              _showText1
                                   ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                               color: Colors.blueAccent,
                             ),
                             onPressed: () {
                               setState(() {
-                                showText1 = !showText1;
+                                _showText1 = !_showText1;
                               });
                             },
                           )),
-                      obscureText: !showText1,
+                      obscureText: !_showText1,
                       maxLines: 1,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? content) {
@@ -117,7 +118,7 @@ class RegisterState extends ConsumerState<Register> {
             Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(400, 50)),
+                    constraints: BoxConstraints.tight( Size(formSizeW, 50)),
                     child: TextFormField(
                       style: const TextStyle(
                           color: Colors.indigo, fontWeight: FontWeight.w600),
@@ -141,18 +142,18 @@ class RegisterState extends ConsumerState<Register> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              showText2
+                              _showText2
                                   ?
                                    Icons.visibility_outlined :Icons.visibility_off_outlined,
                               color: Colors.blueAccent,
                             ),
                             onPressed: () {
                               setState(() {
-                                showText2 = !showText2;
+                                _showText2 = !_showText2;
                               });
                             },
                           )),
-                      obscureText: !showText2,
+                      obscureText: !_showText2,
                       maxLines: 1,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? content) {
@@ -173,7 +174,7 @@ class RegisterState extends ConsumerState<Register> {
             height: 50,
             child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context,
-                    '/verify'), //Don't forget form validation - formkey.currentState.validate()
+                    '/verify', arguments: []), //Don't forget form validation - formkey.currentState.validate()
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),
