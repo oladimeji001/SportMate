@@ -2,26 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/screens/forget_pass.dart';
 import 'package:sportmate/components/screens/main_menu.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/chg_pass.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/logout.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/updemail.dart';
+import 'package:sportmate/components/screens/menus/settings_privacy/updusername.dart';
 import 'package:sportmate/components/screens/start_menu.dart';
+import 'package:sportmate/components/screens/verify.dart';
 import './components/route.dart';
 import 'components/screens/interests.dart';
 import 'components/screens/login.dart';
+import 'components/screens/menus/settings_privacy/verify_pass.dart';
 import 'components/screens/register.dart';
+import 'package:localization/localization.dart';
+
+import 'components/screens/username.dart';
 
 void main() {
   runApp(const ProviderScope(child: Origin()));
 }
-class Origin extends StatefulWidget{
 
+class Origin extends StatefulWidget {
   const Origin({Key? key}) : super(key: key);
 
   @override
-  State createState()=> Sportmate();
+  State createState() => Sportmate();
 }
-class Sportmate extends State {
 
+class Sportmate extends State {
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -31,8 +40,7 @@ class Sportmate extends State {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: Colors.blueAccent),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          elevation: 5,
-            backgroundColor: Colors.black),
+            elevation: 5, backgroundColor: Colors.black),
         textTheme: const TextTheme(
           displaySmall: TextStyle(
             fontSize: 12,
@@ -60,9 +68,15 @@ class Sportmate extends State {
         sportRoute.start: (context) => const StartMenu(),
         sportRoute.login: (context) => const Login(),
         sportRoute.register: (context) => const Register(),
+        sportRoute.username: (context) => const UserName(),
         sportRoute.main_menu: (context) => const MainMenu(),
         sportRoute.interests: (context) => const Interest(),
-        sportRoute.forgot_pass: (context) => const Pass()
+        sportRoute.verify_pass: (context) => const VerifyP(),
+        sportRoute.forgot_pass: (context) => const Pass(),
+        sportRoute.verify: (context) => const Verify(),
+        sportRoute.chgpass: (context) => const ChangePassword(),
+        sportRoute.update_email: (context) => const UpdateEmail(),
+        sportRoute.update_user: (context) => const UpdateUser(),
       },
       initialRoute: sportRoute.start,
     );

@@ -51,8 +51,8 @@ class StartMenu extends StatelessWidget {
               spacing: size.width * 0.1,
               children: [
                 SizedBox(
-                    width: size.width * 0.382,
-                    height: size.height * 0.06,
+                    width: 150,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () =>
                           Navigator.of(context).pushNamed(sportRoute.login),
@@ -65,8 +65,8 @@ class StartMenu extends StatelessWidget {
                       ),
                     )),
                 SizedBox(
-                    width: size.width * 0.382,
-                    height: size.height * 0.06,
+                    width: 150,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () =>
                           Navigator.of(context).pushNamed(sportRoute.register),
