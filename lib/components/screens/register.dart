@@ -15,9 +15,10 @@ class Register extends ConsumerStatefulWidget {
 
 class RegisterState extends ConsumerState<Register> {
 
-  TextEditingController passcontroller1 = TextEditingController();
-  TextEditingController passcontroller2 = TextEditingController();
-  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController _passcontroller1 = TextEditingController();
+  TextEditingController _passcontroller2 = TextEditingController();
+  TextEditingController _emailcontroller = TextEditingController();
+  TextEditingController _phonecontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -60,15 +61,15 @@ class RegisterState extends ConsumerState<Register> {
             generalForm('Last Name', formSizeW, 50,
                 icons: Icons.person),
             generalForm('E-mail', formSizeW, 50,
-                icons: Icons.email_outlined),
+                icons: Icons.email_outlined, controller: _emailcontroller),
             generalForm('Phone Number', formSizeW, 50,
-                icons: Icons.phone),
+                icons: Icons.phone, controller: _phonecontroller),
             Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ConstrainedBox(
                     constraints: BoxConstraints.tight(Size(formSizeW, 50)),
                     child: TextFormField(
-                      controller: passcontroller1,
+                      controller: _passcontroller1,
                       style: const TextStyle(
                           color: Colors.indigo, fontWeight: FontWeight.w600),
                       decoration: InputDecoration(
@@ -161,7 +162,7 @@ class RegisterState extends ConsumerState<Register> {
                           return "Password field can not be empty";
                         } else if (content.length < 8) {
                           return "Password must not be less than eight characters";
-                        } else if (content != passcontroller1.text) {
+                        } else if (content != _passcontroller1.text) {
                           return 'Password don\'t match';
                         }
                         return null;
@@ -174,7 +175,7 @@ class RegisterState extends ConsumerState<Register> {
             height: 50,
             child: ElevatedButton(
                 onPressed: () => Navigator.pushNamed(context,
-                    '/verify', arguments: []), //Don't forget form validation - formkey.currentState.validate()
+                    '/verify', arguments: FormDetail(_emailcontroller, _phonecontroller)), //Don't forget form validation - formkey.currentState.validate()
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),
@@ -182,4 +183,9 @@ class RegisterState extends ConsumerState<Register> {
           ),
         ]))));
   }
+}
+class FormDetail{
+  TextEditingController email;
+  TextEditingController phone;
+  FormDetail(this.email, this.phone);
 }

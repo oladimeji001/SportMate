@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sportmate/components/screens/register.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 
 class Verify extends StatelessWidget {
@@ -7,8 +8,9 @@ class Verify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final formSizeH = size.height * 0.06;
     final formSizeW = size.width;
+    final register = ModalRoute.of(context)?.settings.arguments as FormDetail; //Retrieve information from previous screen
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -25,9 +27,9 @@ class Verify extends StatelessWidget {
                 direction: Axis.vertical,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  const Text(
-                    'Verification link will be sent to ',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    'Verification link will be sent to ${register.email.text}',
+                    style: const TextStyle(fontSize: 15),
                   ),
                   const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
@@ -60,7 +62,7 @@ class Verify extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: const Text('Tap below to Change Phone Number'),
                 ),
-                generalForm('Phone', 300, formSizeH, icons: Icons.phone),
+                generalForm('Phone', 300, 50, icons: Icons.phone),
                 Container(
                   padding: const EdgeInsets.all(8),
                   alignment: Alignment.center,

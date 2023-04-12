@@ -18,6 +18,7 @@ Widget generalForm(String label, double formSizeW, double formSizeH,
       child: ConstrainedBox(
           constraints: BoxConstraints.tight(Size(formSizeW, formSizeH)),
           child: TextFormField(
+            controller: controller,
               style: const TextStyle(
                   color: Colors.indigo, fontWeight: FontWeight.w600),
               decoration: generalFormDecoration(label, icons: icons),
