@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/route.dart';
 
-final interests = [
-  'Football, Basketball, Cricket, Volleyball',
-  'Ice Hockey',
-  'Motor Sport',
-  'Rubgy'
+List _interests = [
+  Interests('Football', false),
+  Interests('Basketball', false),
+  Interests('Cricket', false),
+  Interests('Volleyball', false),
+  Interests('Ice Hockey', false),
+  Interests('Motor Sport', false),
+  Interests('Rubgy', false),
+  Interests('Skiing', false),
+  Interests('Shooting', false),
+  Interests('Bandy', false)
 ];
+
+class Interests {
+  final title;
+  bool isSelect;
+  Interests(this.title, this.isSelect);
+}
 
 class Interest extends ConsumerStatefulWidget {
   const Interest({super.key});
@@ -18,44 +29,82 @@ class Interest extends ConsumerStatefulWidget {
 }
 
 class InterestState extends ConsumerState {
-  bool isSelected = false;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Column(children: [
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: interests.length,
-            itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isSelected = !isSelected;
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: isSelected ? Colors.redAccent : Colors.lightBlue,
-                      border: Border.all(color: Colors.blue, width: 2.0),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(3.0))),
-                  height: 20,
-                  width: 200,
-                  child: Text(
-                    interests[index],
-                    style: TextStyle(
-                        color: isSelected ? Colors.black : Colors.deepOrange,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ),
-          ElevatedButton(
-              onPressed: () =>
-                  Navigator.popAndPushNamed(context, sportRoute.main_menu),
-              child: const Text(
-                'Confirm',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              )),
-        ])));
+      backgroundColor: Colors.blueGrey,
+      appBar: AppBar(
+        title: const Text('Interests'),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Select Interests',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+            ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: size.height - 150),
+                child: GridView.builder(
+                    itemCount: _interests.length,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, mainAxisExtent: 80.0),
+                    itemBuilder: (context, index) {
+                      String interestsKey = _interests[index].title;
+                      print(interestsKey);
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _interests[index].isSelect =
+                                  !_interests[index].isSelect;
+                            });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: _interests[index].isSelect!
+                                    ? Colors.green
+                                    : Colors.lightBlue,
+                                border:
+                                    Border.all(color: Colors.blue, width: 2.0),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(3.0))),
+                            height: 60,
+                            child: Text(
+                              interestsKey,
+                              style: TextStyle(
+                                  color: _interests[index].isSelect!
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                          ));
+                    })),
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(
+                        context, sportRoute.username),
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ))),
+          ]),
+        ),
+      ),
+    );
   }
 }

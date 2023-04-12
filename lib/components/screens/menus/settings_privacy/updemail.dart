@@ -18,22 +18,31 @@ class UpdateEmailC extends State {
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: const Text('Update Email'),
         ),
-        body: Column(
+        body: SingleChildScrollView(child: Column(
           children: [
             const Padding(
               padding: EdgeInsets.all(8),
               child: Text('Enter New Email address'),
             ),
-            generalForm('E-mail', formSizeW, formSizeH, icons: Icons.email_outlined),
-            ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Confirm',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                )),
+            generalForm('E-mail', formSizeW, formSizeH,
+                icons: Icons.email_outlined),
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ))),
           ],
-        ));
+        )));
   }
 }

@@ -24,14 +24,14 @@ class ChangePasswordState extends State {
         ),
         title: const Text('Change Password'),
       ),
-      body: Column(
+      body: SingleChildScrollView(child: Column(
         children: [
           passwordForm('Create new password'),
           passwordForm('Confirm password'),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            width: size.width * 0.382,
-            height: size.height * 0.06,
+            width: 150,
+            height: 50,
             child: ElevatedButton(
                 onPressed: () => null,
                 child: const Text(
@@ -41,7 +41,7 @@ class ChangePasswordState extends State {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget passwordForm(String label) {

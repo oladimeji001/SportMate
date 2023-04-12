@@ -4,7 +4,8 @@ import 'package:sportmate/components/utils/header.dart';
 
 import '../utils/formfield.dart';
 
-bool showText = false;
+bool showText1 = false;
+bool showText2 = false;
 
 class Register extends ConsumerStatefulWidget {
   const Register({super.key});
@@ -14,18 +15,20 @@ class Register extends ConsumerStatefulWidget {
 
 class RegisterState extends ConsumerState<Register> {
 
-  late final TextEditingController _pass;
+  TextEditingController passcontroller2 = TextEditingController();
+  TextEditingController passcontroller1 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final formSizeH = size.height * 0.06;
     final formSizeW = size.width;
+    String pass = '';
 
-    _pass = TextEditingController();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: Column(children: [
+            child: SingleChildScrollView(
+                child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
                 alignment: Alignment.topLeft,
@@ -51,86 +54,131 @@ class RegisterState extends ConsumerState<Register> {
           ),
           Form(
               child: Wrap(children: [
-            generalForm('Full Name', formSizeW, formSizeH,
+            generalForm('First Name', formSizeW, formSizeH,
                 icons: Icons.account_circle_outlined),
-            generalForm('Create Username', formSizeW, formSizeH,
+            generalForm('Last Name', formSizeW, formSizeH,
                 icons: Icons.person),
             generalForm('E-mail', formSizeW, formSizeH,
                 icons: Icons.email_outlined),
             generalForm('Phone Number', formSizeW, formSizeH,
                 icons: Icons.phone),
-            passwordForm('Create Password', contR: _pass), //TextEditingController passed to this field
-            passwordForm('Confirm Password', verify: _pass), //TextEditingController to match passwords
+            Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(400, 50)),
+                    child: TextFormField(
+                      controller: passcontroller1,
+                      style: const TextStyle(
+                          color: Colors.indigo, fontWeight: FontWeight.w600),
+                      decoration: InputDecoration(
+                          labelText: 'Create Password',
+                          labelStyle: const TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.normal),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueGrey)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueAccent)),
+                          errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red)),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueGrey)),
+                          icon: const Icon(
+                            Icons.lock_outline,
+                            color: Colors.blueAccent,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              showText1
+                                  ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                              color: Colors.blueAccent,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                showText1 = !showText1;
+                              });
+                            },
+                          )),
+                      obscureText: !showText1,
+                      maxLines: 1,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (String? content) {
+                        if (content!.isEmpty) {
+                          return "Password field can not be empty";
+                        } else if (content.length < 8) {
+                          return "Password must not be less than eight characters";
+                        }
+                        return null;
+                      },
+                      onChanged: (content) {
+                      },
+                    ))),
+            Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(400, 50)),
+                    child: TextFormField(
+                      style: const TextStyle(
+                          color: Colors.indigo, fontWeight: FontWeight.w600),
+                      decoration: InputDecoration(
+                          labelText: 'Confirm Password',
+                          labelStyle: const TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.normal),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueGrey)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueAccent)),
+                          errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red)),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueGrey)),
+                          icon: const Icon(
+                            Icons.lock_outline,
+                            color: Colors.blueAccent,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              showText2
+                                  ?
+                                   Icons.visibility_outlined :Icons.visibility_off_outlined,
+                              color: Colors.blueAccent,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                showText2 = !showText2;
+                              });
+                            },
+                          )),
+                      obscureText: !showText2,
+                      maxLines: 1,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (String? content) {
+                        if (content!.isEmpty) {
+                          return "Password field can not be empty";
+                        } else if (content.length < 8) {
+                          return "Password must not be less than eight characters";
+                        } else if (content != passcontroller1.text) {
+                          return 'Password don\'t match';
+                        }
+                        return null;
+                      },
+                    )))
           ])),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 8),
-            width: size.width * 0.382,
-            height: size.height * 0.06,
+            width: 150,
+            height: 50,
             child: ElevatedButton(
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/verify'),
+                onPressed: () => Navigator.pushNamed(context,
+                    '/verify'), //Don't forget form validation - formkey.currentState.validate()
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 )),
           ),
-        ])));
-  }
-
-  Widget passwordForm(String label, {TextEditingController? contR, TextEditingController? verify}) {
-    return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ConstrainedBox(
-            constraints: BoxConstraints.tight(const Size(400, 50)),
-            child: TextFormField(
-              controller: contR,
-              style: const TextStyle(
-                  color: Colors.indigo, fontWeight: FontWeight.w600),
-              decoration: InputDecoration(
-                  labelText: label,
-                  labelStyle: const TextStyle(
-                      color: Colors.blueAccent, fontWeight: FontWeight.normal),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey)),
-                  focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueAccent)),
-                  errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red)),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey)),
-                  prefixIcon: const Icon(
-                    Icons.lock_outline,
-                    color: Colors.blueAccent,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      showText
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      color: Colors.blueAccent,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        showText = !showText;
-                      });
-                    },
-                  )),
-              obscureText: !showText,
-              maxLines: 1,
-              validator: (String? content) {
-                if (content!.isEmpty) {
-                  return "Password field can not be empty";
-                } else if (content!.length < 8) {
-                  return "Password must not be less than eight characters";
-                }
-                else if (label == 'Confirm Password'){
-                  if (content != verify?.text){
-                    return 'Password don\'t match';
-                  }
-                }
-                return null;
-              },
-            )));
+        ]))));
   }
 }

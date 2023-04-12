@@ -88,13 +88,13 @@ class LoginState extends ConsumerState {
                                     const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
                                     enabledBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(color: Colors.blueGrey)),
-                                    prefixIcon: const Icon(
+                                    icon: const Icon(
                                       Icons.lock_outline,
                                       color: Colors.blueAccent,
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        showText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                        showText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                                         color: Colors.blueAccent ,
                                       ),
 
@@ -125,10 +125,10 @@ class LoginState extends ConsumerState {
                         style: TextStyle(fontSize: 16),
                       ))),
               SizedBox(
-                width: size.width * 0.382,
-                height: size.height * 0.06,
+                width: 150,
+                height: 50,
                 child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pushNamed(sportRoute.main_menu),
+                    onPressed: () => Navigator.of(context).pushNamed(sportRoute.main_menu),//Don't forget form validation - formkey.currentState.validate()
                     child: const Text(
                       'Log in',
                       style: TextStyle(color: Colors.white, fontSize: 20),

@@ -3,43 +3,55 @@ import 'package:flutter/material.dart';
 
 import '../screens/login.dart';
 
-Widget generalForm(String label, double formSizeW, double formSizeH,{IconData? icons}){
+Widget otpForm() {
+  return const SizedBox(
+      child: TextField(
+    decoration: InputDecoration(
+        hintText: '_ _ _ _ _ _', hintStyle: TextStyle(fontSize: 30)),
+  ));
+}
+
+Widget generalForm(String label, double formSizeW, double formSizeH,
+    {IconData? icons, int? maxLength, double? cursorHeight}) {
   return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ConstrainedBox(
-          constraints:
-          BoxConstraints.tight(Size(formSizeW, formSizeH )),
-          child:  TextFormField(
-            style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600),
-            decoration: generalFormDecoration(label, icons: icons),
-            maxLines: 1,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (String? content){
-              if (content!.isEmpty) {
-                return '$label field can not be empty';
-              }
-              else if (label == 'E-mail'){
-                if ((!content.endsWith('.com'))){// || (!content.endsWith('@yahoo.com')) || (!content.endsWith('@gmail.com'))){
-                  return 'Please enter a valid email address';
+          constraints: BoxConstraints.tight(Size(formSizeW, formSizeH)),
+          child: TextFormField(
+              style: const TextStyle(
+                  color: Colors.indigo, fontWeight: FontWeight.w600),
+              decoration: generalFormDecoration(label, icons: icons),
+              maxLines: 1,
+              maxLength: maxLength,
+              cursorHeight: cursorHeight,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (String? content) {
+                if (content!.isEmpty) {
+                  return '$label field can not be empty';
+                } else if (label == 'E-mail') {
+                  if ((!content.endsWith('.com'))) {
+                    // || (!content.endsWith('@yahoo.com')) || (!content.endsWith('@gmail.com'))){
+                    return 'Please enter a valid email address';
+                  }
                 }
-              }
-              return null;
-            }
-          )));
+                return null;
+              })));
 }
 
 InputDecoration generalFormDecoration(String labelText, {IconData? icons}) {
   return InputDecoration(
       labelText: labelText,
-      labelStyle: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.normal),
+      labelStyle: const TextStyle(
+          color: Colors.blueAccent, fontWeight: FontWeight.normal),
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      prefixIcon: Icon(icons, color: Colors.blueAccent,),
+      icon: Icon(
+        icons,
+        color: Colors.blueAccent,
+      ),
       border: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey)),
       focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueAccent)),
-      errorBorder:
-          const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey)));
 }
