@@ -11,17 +11,30 @@ Widget otpForm() {
   ));
 }
 
-Widget generalForm(String label, double formSizeW, double formSizeH,
-    {IconData? icons, int? maxLength, double? cursorHeight, TextEditingController? controller}) {
+Widget generalForm(
+  String label,
+  double formSizeW,
+  double formSizeH, {
+  IconData? icons,
+  Widget? prefixIcon,
+  int? maxLength,
+  double? cursorHeight,
+  TextEditingController? controller,
+}) {
   return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ConstrainedBox(
           constraints: BoxConstraints.tight(Size(formSizeW, formSizeH)),
           child: TextFormField(
-            controller: controller,
+              controller: controller,
+              textCapitalization: label.contains('Name')
+                  ? TextCapitalization.words
+                  : TextCapitalization.none,
+              keyboardType: label.contains('Number') ? TextInputType.phone : TextInputType.text,
               style: const TextStyle(
                   color: Colors.indigo, fontWeight: FontWeight.w600),
-              decoration: generalFormDecoration(label, icons: icons),
+              decoration: generalFormDecoration(label,
+                  icons: icons, prefixIcon: prefixIcon),
               maxLines: 1,
               maxLength: maxLength,
               cursorHeight: cursorHeight,
@@ -39,7 +52,8 @@ Widget generalForm(String label, double formSizeW, double formSizeH,
               })));
 }
 
-InputDecoration generalFormDecoration(String labelText, {IconData? icons}) {
+InputDecoration generalFormDecoration(String labelText,
+    {IconData? icons, Widget? prefixIcon}) {
   return InputDecoration(
       labelText: labelText,
       labelStyle: const TextStyle(
@@ -49,6 +63,7 @@ InputDecoration generalFormDecoration(String labelText, {IconData? icons}) {
         icons,
         color: Colors.blueAccent,
       ),
+      prefixIcon: prefixIcon,
       border: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blueGrey)),
       focusedBorder: const OutlineInputBorder(
@@ -57,7 +72,8 @@ InputDecoration generalFormDecoration(String labelText, {IconData? icons}) {
           borderSide: BorderSide(color: Colors.blueGrey)));
 }
 
-InputDecoration passwordFormfield(bool isTap, set) {
+InputDecoration passwordFormfield(BuildContext context, bool isTap, set,
+    {TextEditingController? controller}) {
   return InputDecoration(
       labelText: 'Password',
       labelStyle: const TextStyle(color: Colors.blueAccent),

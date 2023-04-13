@@ -1,9 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sportmate/components/screens/interests.dart';
 
-class Profile extends StatelessWidget {
+import '../pickimageFromGallery.dart';
+
+class Profile extends StatefulWidget {
   Profile();
 
+  @override
+  ProfileS createState() => ProfileS();
+}
+
+class ProfileS extends State {
+  File? image;
 
   List profile = [
     const ProfileItems('Username', 'oladimeji001', Icons.person),
@@ -17,18 +27,33 @@ class Profile extends StatelessWidget {
       children: [
         UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: Colors.white10),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: const AssetImage('assets/images/Ellipse 11.png'),
-              child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                      onPressed: () {
-                      },
-                      icon: const Icon(
-                        Icons.add_photo_alternate_outlined,
-                        color: Colors.blueGrey,
-                      ))),
-            ),
+            currentAccountPicture: image == null
+                ? CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white10,
+                  backgroundImage:
+                      const AssetImage('assets/images/noprofile.png'),
+                  child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: IconButton(iconSize: 20,
+                        icon: const Icon(Icons.add_a_photo),
+                        onPressed: selectImage,
+                      )),
+                )
+                : CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white10,
+                  backgroundImage: FileImage(image!),
+                  child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                          color: Colors.black,
+                        ),
+                        onPressed: selectImage,
+                      )),
+                ),
             accountName: const Text(
               'Oladimeji Michael',
               style: TextStyle(color: Colors.blueAccent, fontSize: 18),
@@ -50,6 +75,11 @@ class Profile extends StatelessWidget {
       ],
     );
   }
+
+  void selectImage() async {
+    image = await pickImage(context);
+    setState(() {});
+  }
 }
 
 class ProfileItems {
@@ -59,4 +89,3 @@ class ProfileItems {
 
   const ProfileItems(this.title, this.detail, this.icon);
 }
-

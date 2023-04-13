@@ -7,7 +7,6 @@ class StartMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print("this is ${size.width}");
     final ThemeData optionStyle = Theme.of(context);
     return Scaffold(
         body: SafeArea(

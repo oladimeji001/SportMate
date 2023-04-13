@@ -13,11 +13,11 @@ import 'components/screens/interests.dart';
 import 'components/screens/login.dart';
 import 'components/screens/menus/settings_privacy/verify_pass.dart';
 import 'components/screens/register.dart';
-import 'package:localization/localization.dart';
 
 import 'components/screens/username.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: Origin()));
 }
 
@@ -68,7 +68,7 @@ class Sportmate extends State {
         sportRoute.start: (context) => const StartMenu(),
         sportRoute.login: (context) => const Login(),
         sportRoute.register: (context) => const Register(),
-        sportRoute.username: (context) => const UserName(),
+        sportRoute.username: (context) => const UserNameO(),
         sportRoute.main_menu: (context) => const MainMenu(),
         sportRoute.interests: (context) => const Interest(),
         sportRoute.verify_pass: (context) => const VerifyP(),
