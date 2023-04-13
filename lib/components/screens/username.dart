@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sportmate/components/route.dart';
+import 'package:sportmate/components/screens/pickimageFromGallery.dart';
 import 'package:sportmate/components/utils/formfield.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+File? image;
 
-class UserName extends StatelessWidget {
-  const UserName({super.key});
+class UserNameO extends StatefulWidget {
+  const UserNameO({super.key});
 
+  @override
+  State createState() => UserName();
+}
 
+class UserName extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,23 +35,43 @@ class UserName extends StatelessWidget {
                   style: TextStyle(color: Colors.black54, fontSize: 16),
                 ),
               ),
-              Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        const AssetImage('assets/images/Ellipse 11.png'),
-                    child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.add_a_photo_outlined),
-                          onPressed: () {},
-                        )),
-                  )),
+              image == null
+                  ? Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white10,
+                        backgroundImage:
+                            const AssetImage('assets/images/noprofile.png'),
+                        child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: IconButton(
+                              icon: const Icon(Icons.add_a_photo),
+                              onPressed: selectImage,
+                            )),
+                      ))
+                  : Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white10,
+                        backgroundImage: FileImage(image!),
+                        child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.add_a_photo,
+                                color: Colors.black,
+                              ),
+                              onPressed: selectImage,
+                            )),
+                      )),
               Align(
                   alignment: const Alignment(-0.1, 0),
-                  child: generalForm('Username', 200, 50, icons: Icons.person, maxLength: 20)),
+                  child: generalForm('Username', 200, 50,
+                      icons: Icons.person, maxLength: 20)),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 width: 150,
@@ -62,5 +89,10 @@ class UserName extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  void selectImage() async {
+    image = await pickImage(context);
+    setState(() {});
   }
 }
