@@ -4,8 +4,8 @@ import 'package:sportmate/components/utils/header.dart';
 
 import '../utils/formfield.dart';
 
-bool _showText1 = false;
-bool _showText2 = false;
+bool? _showText1;
+bool? _showText2;
 
 class Register extends ConsumerStatefulWidget {
   const Register({super.key});
@@ -19,6 +19,13 @@ class RegisterState extends ConsumerState<Register> {
   TextEditingController _passcontroller2 = TextEditingController();
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _phonecontroller = TextEditingController();
+
+  @override
+  void initState(){
+    _showText1 = false;
+    _showText2 = false;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -92,17 +99,17 @@ class RegisterState extends ConsumerState<Register> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _showText1
+                              _showText1!
                                   ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                               color: Colors.blueAccent,
                             ),
                             onPressed: () {
                               setState(() {
-                                _showText1 = !_showText1;
+                                _showText1 = !_showText1!;
                               });
                             },
                           )),
-                      obscureText: !_showText1,
+                      obscureText: !_showText1!,
                       maxLines: 1,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? content) {
@@ -143,18 +150,18 @@ class RegisterState extends ConsumerState<Register> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _showText2
+                              _showText2!
                                   ?
                                    Icons.visibility_outlined :Icons.visibility_off_outlined,
                               color: Colors.blueAccent,
                             ),
                             onPressed: () {
                               setState(() {
-                                _showText2 = !_showText2;
+                                _showText2 = !_showText2!;
                               });
                             },
                           )),
-                      obscureText: !_showText2,
+                      obscureText: !_showText2!,
                       maxLines: 1,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (String? content) {

@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:sportmate/components/screens/register.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 
-class Verify extends StatelessWidget {
+int _stepperCount = 0;
+class Verify extends StatefulWidget{
   const Verify({super.key});
+
+  @override
+  VerifyS createState() => VerifyS();
+}
+class VerifyS extends State{
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,12 @@ class Verify extends StatelessWidget {
         title: const Text('Verification'),
       ),
       body: Center(
-        child: Stepper(type: StepperType.horizontal, steps: [
+        child: Stepper(
+          currentStep: _stepperCount,
+            onStepContinue: (){
+
+            },
+            type: StepperType.horizontal, steps: [
           Step(
               title: const Text(
                 'Email Verification',
