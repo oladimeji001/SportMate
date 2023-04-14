@@ -41,6 +41,7 @@ class Sportmate extends State {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'SportMate',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor: Colors.blueAccent),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(

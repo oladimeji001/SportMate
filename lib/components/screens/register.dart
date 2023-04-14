@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/utils/header.dart';
 
 import '../utils/formfield.dart';
@@ -19,6 +20,8 @@ class RegisterState extends ConsumerState<Register> {
   final TextEditingController _passcontroller2 = TextEditingController();
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _phonecontroller = TextEditingController();
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
   Country? _country;
   final _formKey = GlobalKey<FormState>();
 
@@ -37,6 +40,27 @@ class RegisterState extends ConsumerState<Register> {
             _country = country;
           });
         });
+  }
+
+  void register(
+      String firstName,
+      String lastName,
+      String phoneNumber,
+      String email,
+      String password,
+      phoneController,
+      emailController,
+      phoneCode) {
+    ref.read(authControllerProvider).emailSignUp(
+        context,
+        email,
+        password,
+        firstName,
+        lastName,
+        phoneNumber,
+        phoneController,
+        emailController,
+        phoneCode);
   }
 
   @override
@@ -76,8 +100,10 @@ class RegisterState extends ConsumerState<Register> {
               key: _formKey,
               child: Wrap(children: [
                 generalForm('First Name', formSizeW, 50,
-                    icons: Icons.account_circle_outlined),
-                generalForm('Last Name', formSizeW, 50, icons: Icons.person),
+                    icons: Icons.account_circle_outlined,
+                    controller: _firstNameController),
+                generalForm('Last Name', formSizeW, 50,
+                    icons: Icons.person, controller: _lastNameController),
                 generalForm('E-mail', formSizeW, 50,
                     icons: Icons.email_outlined, controller: _emailcontroller),
                 generalForm('Phone Number', formSizeW, 50,
@@ -95,7 +121,10 @@ class RegisterState extends ConsumerState<Register> {
                               onTap: pickCountry,
                               child: Text(
                                 '+${_country!.phoneCode}',
-                                style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 15),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
                               ),
                             ),
                     ),
@@ -220,11 +249,19 @@ class RegisterState extends ConsumerState<Register> {
             width: 150,
             height: 50,
             child: ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/verify',
-                    arguments: FormDetail(
-                        _emailcontroller,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    register(
+                        _firstNameController.text.trim(), //Send First Name to backend
+                        _lastNameController.text.trim(),
+                        '+${_country!.phoneCode}${_phonecontroller.text.trim()}', //Send phone number to backend
+                        _emailcontroller.text.trim(), //Send email
+                        _passcontroller1.text.trim(), //Send password
                         _phonecontroller,
-                        _country!.phoneCode)), //Don't forget form validation - formkey.currentState.validate()
+                        _emailcontroller,
+                        _country!.phoneCode);
+                  }
+                },
                 child: const Text(
                   'Proceed',
                   style: TextStyle(color: Colors.white, fontSize: 20),

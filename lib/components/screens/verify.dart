@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/route.dart';
 import 'package:sportmate/components/screens/register.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 
+import '../controller/authcontroller.dart';
+
 int _stepperCount = 0;
 bool _isTap = false;
 
-class Verify extends StatefulWidget {
+class Verify extends ConsumerStatefulWidget {
   const Verify({super.key});
 
   @override
   VerifyS createState() => VerifyS();
 }
 
-class VerifyS extends State {
+class VerifyS extends ConsumerState {
   @override
   void initState() {
     _stepperCount = 0;
     _isTap = false;
     super.initState();
+  }
+  
+  void verifyEmail(String email){
+    ref.read(authControllerProvider).emailVerification(context, email);
   }
 
   @override
@@ -82,7 +89,9 @@ class VerifyS extends State {
                         width: 150,
                         height: 50,
                         child: ElevatedButton(
-                            onPressed: () => null,
+                            onPressed: () {
+                              verifyEmail(register.email.text.trim());
+                            },
                             child: const Text(
                               'Proceed',
                               style:
