@@ -137,7 +137,7 @@ class LoginState extends ConsumerState {
                 child: ElevatedButton(
                     onPressed: () {
                       if(formKey.currentState!.validate()) {
-                          login(emailController.text, passController.text);
+                          login(emailController.text.trim(), passController.text.trim());
                       }
                     },
                     child: const Text(

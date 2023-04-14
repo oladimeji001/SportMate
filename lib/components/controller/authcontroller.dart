@@ -18,14 +18,28 @@ class AuthController {
     authBase.phoneVerification(context, phoneNumber);
   }
 
-  void verifyOTP(BuildContext context, String verificationId, String userOTP){
-    authBase.verifyOTP(context: context, verificationId: verificationId, userOTP: userOTP);
+  void verifyOTP(BuildContext context, String verificationId, String userOTP) {
+    authBase.verifyOTP(
+        context: context, verificationId: verificationId, userOTP: userOTP);
   }
 
-  void emailSignUp(BuildContext context, String email, String password,
-      String firstName, String lastName, String phoneNumber, ProviderRef ref) async {
+  void emailSignUp(
+      BuildContext context,
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String phoneNumber,
+      TextEditingController phoneController,
+      TextEditingController emailController,
+      var phoneCode) async {
     authBase.emailSignUp(context, email, password,
-        firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, ref: ref);
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        phoneController: phoneController,
+        emailController: emailController,
+        phoneCode: phoneCode);
   }
 
   void emailSignIn(BuildContext context, String email, String password) {
@@ -36,8 +50,8 @@ class AuthController {
     authBase.emailVerification(context, email);
   }
 
-  void forgetPass(BuildContext context, String newPassword){
-    authBase.forgetPass(context, newPassword);
+  void forgetPass(BuildContext context, String email) {
+    authBase.forgetPass(context, email);
   }
 
   void changePass(BuildContext context, String email) {
@@ -51,12 +65,20 @@ class AuthController {
   void updateUsername(BuildContext context, String newUsername) {
     authBase.updateUsername(context, newUsername);
   }
-void uploadInterests(BuildContext context, List<String> interests){
+
+  void uploadInterests(BuildContext context, List<String> interests) {
     authBase.uploadInterests(context, interests);
-}
-  void profileUpload(BuildContext context, File profilePics, String userName) {
-    authBase.profileUpload(context, profilePics: profilePics, userName: userName, ref: ref);
   }
+
+  void profileUpload(BuildContext context, File profilePics, String userName) {
+    authBase.profileUpload(context,
+        profilePics: profilePics, userName: userName, ref: ref);
+  }
+
+  void verifyUser(BuildContext context, String email, String password){
+    authBase.verifyUser(context, email, password);
+  }
+
   void signOut(BuildContext context) {
     authBase.signOut(context);
   }

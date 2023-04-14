@@ -7,6 +7,8 @@ import 'package:sportmate/components/controller/firebasestorage.dart';
 import 'package:sportmate/components/screens/pickimageFromGallery.dart';
 import 'package:sportmate/components/route.dart';
 
+import '../screens/register.dart';
+
 final authProvider = Provider((ref) => AuthBase(
     auth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance));
 
@@ -21,6 +23,7 @@ class AuthBase {
       await auth.verifyPhoneNumber(
           verificationCompleted: (PhoneAuthCredential credential) async {
             await auth.signInWithCredential(credential);
+            await auth.currentUser!.updatePhoneNumber(credential);
           },
           verificationFailed: (FirebaseAuthException exception) {
             throw Exception(exception.message);
@@ -38,16 +41,25 @@ class AuthBase {
       {required String firstName,
       required String lastName,
       required String phoneNumber,
-      required ProviderRef ref}) async {
+        required TextEditingController phoneController,
+        required TextEditingController emailController,
+        required var phoneCode
+      }) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       String uid = auth.currentUser!.uid;
-      firestore.collection('users').doc(uid).set({
+      await firestore.collection('users').doc(uid).set({
         'firstname': firstName,
         'lastname': lastName,
         'phone-number': phoneNumber
       });
+      Navigator.pushNamed(context, '/verify',
+          arguments: FormDetail(
+              emailController,
+              phoneController,
+              phoneCode
+              ));
     } on FirebaseException catch (exc) {
       showSnackBar(context: context, content: exc.toString());
     }
@@ -72,8 +84,9 @@ class AuthBase {
 
   void forgetPass(BuildContext context, String email) async {
     try {
-      auth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (exc) {
+      await auth.sendPasswordResetEmail(email: email);
+      showSnackBar(context: context, content: 'Verification Link sent');
+    } on FirebaseException catch (exc) {
       showSnackBar(context: context, content: exc.toString());
     }
   }
@@ -126,6 +139,7 @@ class AuthBase {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationId,
           smsCode: userOTP); //userOTP is from user input
+
       await auth.signInWithCredential(credential);
       //Navigator.of(context).pushNamedAndRemoveUntil() add to onchanged otp verification
     } on FirebaseAuthException catch (exc) {
@@ -153,6 +167,14 @@ class AuthBase {
     }
   }
 
+  void verifyUser(BuildContext context, String email, String password)async{
+   try{
+    await auth.signInWithEmailAndPassword(email: email, password: password);
+
+  } on FirebaseException catch(exc){
+     showSnackBar(context: context, content: exc.toString());
+   }
+  }
   void signOut(BuildContext context) async {
     try {
       await auth.signOut();
