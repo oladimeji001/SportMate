@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../screens/login.dart';
 
+bool showText = false;
+
 Widget otpForm() {
   return const SizedBox(
       child: TextField(

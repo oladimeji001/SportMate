@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/route.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 import 'package:sportmate/components/utils/header.dart';
 
-bool showText = false;
+bool _showText = false;
 class Login extends ConsumerStatefulWidget{
   const Login({super.key});
 
@@ -13,13 +14,18 @@ class Login extends ConsumerStatefulWidget{
   LoginState createState()=> LoginState();
 }
 class LoginState extends ConsumerState {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
+  void login(String email, String password){
+    ref.read(authControllerProvider).emailSignIn(context, email, password);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final formSizeH = size.height * 0.06;
     final formSizeW = size.width;
-    final formKey = GlobalKey<FormState>();
-    final isPhone = false;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -35,7 +41,7 @@ class LoginState extends ConsumerState {
                         vertical: size.width * 0.015,
                       ),
                       child: IconButton(
-                        tooltip: 'back',
+                        tooltip: 'Back',
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(
                           Icons.arrow_back_ios_new,
@@ -66,15 +72,16 @@ class LoginState extends ConsumerState {
                                     color: Colors.black))
                           ]))),
               Form(
-                  //key: formKey,
+                  key: formKey,
                   child: Wrap(children: [
-                    generalForm('E-mail', formSizeW, formSizeH, icons: Icons.email_outlined),
+                    generalForm('E-mail', formSizeW, 50, icons: Icons.email_outlined, controller: emailController),
                     Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: ConstrainedBox(
                             constraints:
-                                BoxConstraints.tight(Size(formSizeW, formSizeH)),
+                                BoxConstraints.tight(Size(formSizeW, 50)),
                             child: TextFormField(
+                              controller: passController,
                               style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
                                     labelText: 'Password',
@@ -94,17 +101,17 @@ class LoginState extends ConsumerState {
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        showText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                                        _showText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                                         color: Colors.blueAccent ,
                                       ),
 
                                       onPressed: () {
                                         setState(() {
-                                          showText = !showText;
+                                          _showText = !_showText;
                                         });
                                       },
                                     )),
-                              obscureText: !showText,
+                              obscureText: !_showText,
                               maxLines: 1,
                             validator: (String? content){
                                 if (content!.isEmpty){
@@ -128,7 +135,11 @@ class LoginState extends ConsumerState {
                 width: 150,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pushNamed(sportRoute.main_menu),//Don't forget form validation - formkey.currentState.validate()
+                    onPressed: () {
+                      if(formKey.currentState!.validate()) {
+                          login(emailController.text, passController.text);
+                      }
+                    },
                     child: const Text(
                       'Log in',
                       style: TextStyle(color: Colors.white, fontSize: 20),

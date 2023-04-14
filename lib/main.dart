@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/screens/forget_pass.dart';
@@ -8,6 +9,7 @@ import 'package:sportmate/components/screens/menus/settings_privacy/updemail.dar
 import 'package:sportmate/components/screens/menus/settings_privacy/updusername.dart';
 import 'package:sportmate/components/screens/start_menu.dart';
 import 'package:sportmate/components/screens/verify.dart';
+import 'package:sportmate/firebase_options.dart';
 import './components/route.dart';
 import 'components/screens/interests.dart';
 import 'components/screens/login.dart';
@@ -16,8 +18,10 @@ import 'components/screens/register.dart';
 
 import 'components/screens/username.dart';
 
-void main() {
+void main()async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.
+      initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: Origin()));
 }
 
