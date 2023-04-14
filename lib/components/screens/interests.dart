@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/route.dart';
 
 List _interests = [
@@ -15,6 +16,8 @@ List _interests = [
   Interests('Bandy', false)
 ];
 
+List<String> _interestsStore = [];
+
 class Interests {
   final title;
   bool isSelect;
@@ -29,6 +32,9 @@ class Interest extends ConsumerStatefulWidget {
 }
 
 class InterestState extends ConsumerState {
+  void uploadInterests(List<String> interests){
+    ref.read(authControllerProvider).uploadInterests(context, interests);
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -61,13 +67,13 @@ class InterestState extends ConsumerState {
                             crossAxisCount: 2, mainAxisExtent: 80.0),
                     itemBuilder: (context, index) {
                       String interestsKey = _interests[index].title;
-                      print(interestsKey);
                       return GestureDetector(
                           onTap: () {
                             setState(() {
                               _interests[index].isSelect =
                                   !_interests[index].isSelect;
                             });
+                            _interestsStore.add(interestsKey);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -96,8 +102,9 @@ class InterestState extends ConsumerState {
                 width: 150,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(
-                        context, sportRoute.username),
+                    onPressed: () {
+                        uploadInterests(_interestsStore);
+                    },
                     child: const Text(
                       'Confirm',
                       style: TextStyle(color: Colors.white, fontSize: 20),

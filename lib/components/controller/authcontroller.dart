@@ -18,9 +18,9 @@ class AuthController {
     authBase.phoneVerification(context, phoneNumber);
   }
 
-  void verifyOTP(BuildContext context, String verificationId, String userOTP) {
+  void verifyOTP(BuildContext context, /**String verificationId,**/ String userOTP) {
     authBase.verifyOTP(
-        context: context, verificationId: verificationId, userOTP: userOTP);
+        context: context, /**verificationId: verificationId,**/ userOTP: userOTP);
   }
 
   void emailSignUp(

@@ -21,11 +21,19 @@ class VerifyS extends ConsumerState {
   void initState() {
     _stepperCount = 0;
     _isTap = false;
+
     super.initState();
   }
   
   void verifyEmail(String email){
     ref.read(authControllerProvider).emailVerification(context, email);
+  }
+  void verifyPhone(String phoneNumber){
+    ref.read(authControllerProvider).phoneVerification(context, phoneNumber);
+  }
+  
+  void verifyOTP(String userOTP){
+    ref.read(authControllerProvider).verifyOTP(context, userOTP);
   }
 
   @override
@@ -48,9 +56,7 @@ class VerifyS extends ConsumerState {
                 setState(() {
                   _stepperCount += 1;
                 });
-              } else if (_stepperCount == 1) {
-                Navigator.of(context)
-                    .pushReplacementNamed(sportRoute.interests);
+
               }
             },
             onStepCancel: () {
@@ -116,7 +122,7 @@ class VerifyS extends ConsumerState {
                     Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(10.0),
-                      child: const Text('OTP will be sent to the number below, tap check button to continue'),
+                      child: _isTap ? const Text('OTP Sent') :const Text('OTP will be sent to the number below, tap check button to continue'),
                     ),
                     Padding(padding: const EdgeInsets.symmetric(horizontal: 40), child: ConstrainedBox(
                       constraints: BoxConstraints.tight(const Size(260, 50)),
@@ -126,6 +132,7 @@ class VerifyS extends ConsumerState {
                         trailing: IconButton(
                           icon:  Icon(Icons.check, color: _isTap ? Colors.blueAccent: Colors.black,),
                           onPressed: () {
+                            verifyPhone('+${register.countrycode} ${register.phone.text}');
                             setState(() {
                               _isTap = true;
                             });
@@ -143,15 +150,21 @@ class VerifyS extends ConsumerState {
                     Container(
                         width: 150,
                         alignment: Alignment.center,
-                        child: const TextField(
+                        child: TextField(
                           maxLength: 6,
                           maxLines: 1,
                           textAlign: TextAlign.center,
                           autofocus: true,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               hintText: '_ _ _ _ _ _',
-                              hintStyle: TextStyle(fontSize: 30)),
+                              hintStyle: TextStyle(fontSize: 30),
+                          ),
+                          onChanged: (String userOTP){
+                            if(userOTP.length == 6){
+                              verifyOTP(userOTP);
+                            }
+                          },
                         )),]) : const SizedBox()
                   ],
                 ),

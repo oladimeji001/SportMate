@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/route.dart';
 import 'package:sportmate/components/screens/pickimageFromGallery.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 
 File? image;
 
-class UserNameO extends StatefulWidget {
+class UserNameO extends ConsumerStatefulWidget {
   const UserNameO({super.key});
 
   @override
-  State createState() => UserName();
+  ConsumerState createState() => UserName();
 }
 
-class UserName extends State {
+class UserName extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
