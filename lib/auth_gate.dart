@@ -7,16 +7,20 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const StartMenu();
-        }
+    try{
+      return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const MainMenu();
+          }
 
-        // Render your application if authenticated
-        return const MainMenu();
-      },
-    );
+          // Render your application if authenticated
+          return const StartMenu();
+        },
+      );
+    } on Exception{
+      return const StartMenu();
+    }
   }
 }

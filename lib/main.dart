@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/screens/forget_pass.dart';
 import 'package:sportmate/components/screens/main_menu.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy/chg_pass.dart';
@@ -23,7 +21,7 @@ import 'components/screens/username.dart';
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.
-      initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      initializeApp(name: 'sportmate', options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const ProviderScope(child: Origin()));
 }
@@ -88,7 +86,8 @@ class Sportmate extends ConsumerState {
         sportRoute.update_email: (context) => const UpdateEmail(),
         sportRoute.update_user: (context) => const UpdateUser(),
       },
-      home: const AuthGate()
+      home: const AuthGate(),
+      //initialRoute: sportRoute.start,
     );
   }
 }

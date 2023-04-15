@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/controller/authcontroller.dart';
-import 'package:sportmate/components/screens/interests.dart';
 
 import '../pickimageFromGallery.dart';
 
