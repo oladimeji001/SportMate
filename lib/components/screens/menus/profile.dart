@@ -43,8 +43,8 @@ class ProfileS extends ConsumerState {
   Widget build(BuildContext context) {
     Map<String, dynamic>? userData = getProfile();
     String? getEmail = getEmailAddress(context);
-    List interestsData = userData!['interests'];
-    String userPics = userData!['profile_pics'];
+    List interestsData = userData?['interests'];
+    String userPics = userData?['profile_pics'];
     List profile = [
       ProfileItems('Username', getUserName(context), Icons.person),
       ProfileItems('Phone', getphoneNumber(context), Icons.phone),
