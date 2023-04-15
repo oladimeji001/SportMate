@@ -130,7 +130,7 @@ class VerifyS extends ConsumerState {
                         leading: const Icon(Icons.phone),
                         title: Text('+${register.countrycode} ${register.phone.text}'),
                         trailing: IconButton(
-                          icon:  Icon(Icons.check, color: _isTap ? Colors.blueAccent: Colors.black,),
+                          icon:  Icon(Icons.check_box, color: _isTap ? Colors.blueAccent: Colors.red,),
                           onPressed: () {
                             verifyPhone('+${register.countrycode} ${register.phone.text}');
                             setState(() {

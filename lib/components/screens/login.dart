@@ -14,7 +14,7 @@ class Login extends ConsumerStatefulWidget{
   LoginState createState()=> LoginState();
 }
 class LoginState extends ConsumerState {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
@@ -72,7 +72,7 @@ class LoginState extends ConsumerState {
                                     color: Colors.black))
                           ]))),
               Form(
-                  key: formKey,
+                  key: _formKey,
                   child: Wrap(children: [
                     generalForm('E-mail', formSizeW, 50, icons: Icons.email_outlined, controller: emailController),
                     Padding(
@@ -136,7 +136,7 @@ class LoginState extends ConsumerState {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      if(formKey.currentState!.validate()) {
+                      if(_formKey.currentState!.validate()) {
                           login(emailController.text.trim(), passController.text.trim());
                       }
                     },
