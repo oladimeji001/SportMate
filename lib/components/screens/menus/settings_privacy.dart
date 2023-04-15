@@ -16,21 +16,43 @@ class Settings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
+    return ListView(
+      children: [
+        ListTile(
+          title: Text(setting_items[0].title),
+          onTap: () => Navigator.pushNamed(context, sportRoute.verify_pass,
+              arguments: setting_items[0]),
+        ),
+        ListTile(
+          title: Text(setting_items[1].title),
+          onTap: () => Navigator.pushNamed(context, sportRoute.verify_pass,
+              arguments: setting_items[1]),
+        ),
+        ListTile(
+          title: Text(setting_items[2].title),
+          onTap: () => Navigator.pushNamed(context, sportRoute.verify_pass,
+              arguments: setting_items[2]),
+        ),
+        ListTile(
+          title: Text(setting_items[3].title),
+          onTap: () => ref.read(authControllerProvider).signOut(context),
+        )
+      ],
+    );
+    /**return ListView.builder(
       itemCount: setting_items.length,
       itemBuilder: (context, int index) => ListTile(
         onTap: () {
-          if (setting_items[index] != 'Logout'){
-            Navigator.pushNamed(context, sportRoute.verify_pass,arguments: setting_items[index]);
+          if (setting_items[index] == 'Logout'){
+
+            return;
           }
-          else{
-            ref.read(authControllerProvider).signOut(context);
-          }
+          Navigator.pushNamed(context, sportRoute.verify_pass,arguments: setting_items[index]);
         },
         title: Text(setting_items[index].title),
       ),
       //separatorBuilder: (context, index) => const Divider(thickness: 2,),
-    );
+    );**/
   }
 }
 

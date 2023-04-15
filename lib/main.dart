@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/screens/forget_pass.dart';
 import 'package:sportmate/components/screens/main_menu.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy/chg_pass.dart';
@@ -10,6 +12,7 @@ import 'package:sportmate/components/screens/start_menu.dart';
 import 'package:sportmate/components/screens/verify.dart';
 import 'package:sportmate/firebase_options.dart';
 import './components/route.dart';
+import 'auth_gate.dart';
 import 'components/screens/interests.dart';
 import 'components/screens/login.dart';
 import 'components/screens/menus/settings_privacy/verify_pass.dart';
@@ -21,20 +24,23 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.
       initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const ProviderScope(child: Origin()));
 }
 
-class Origin extends StatefulWidget {
+class Origin extends ConsumerStatefulWidget {
   const Origin({Key? key}) : super(key: key);
 
   @override
-  State createState() => Sportmate();
+  ConsumerState createState() => Sportmate();
 }
 
-class Sportmate extends State {
+class Sportmate extends ConsumerState {
+
+  String? userA;
   @override
   void initState() {
-    super.initState();
+   super.initState();
   }
 
   @override
@@ -82,7 +88,7 @@ class Sportmate extends State {
         sportRoute.update_email: (context) => const UpdateEmail(),
         sportRoute.update_user: (context) => const UpdateUser(),
       },
-      initialRoute: sportRoute.start,
+      home: const AuthGate()
     );
   }
 }

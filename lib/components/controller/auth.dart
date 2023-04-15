@@ -138,7 +138,7 @@ class AuthBase {
           .collection('users')
           .doc(uid)
           .update({'interests': interests});
-      Navigator.pushNamed(context, sportRoute.username);
+      Navigator.pushReplacementNamed(context, sportRoute.username);
     } on FirebaseException catch (exc) {
       showSnackBar(context: context, content: exc.toString());
     }
@@ -176,7 +176,7 @@ class AuthBase {
           .doc(uid)
           .update({'profile_pics': photoUrl, 'username': userName});
       await auth.currentUser!.updateDisplayName(userName);
-      Navigator.of(context).pushReplacementNamed(sportRoute.main_menu);
+      Navigator.of(context).pushNamedAndRemoveUntil(sportRoute.main_menu, (route) => false);//();
     } on FirebaseAuthException catch (exc) {
       showSnackBar(context: context, content: exc.toString());
     }
@@ -213,6 +213,7 @@ class AuthBase {
   void signOut(BuildContext context) async {
     try {
       await auth.signOut();
+      Navigator.pushReplacementNamed(context, sportRoute.start);
     } on FirebaseAuthException catch (exc) {
       showSnackBar(context: context, content: exc.toString());
     }
