@@ -217,17 +217,14 @@ class AuthBase {
       showSnackBar(context: context, content: exc.toString());
     }
   }
-  Future<String?> getProfile(BuildContext context)async{
-    try{
+  Future<Map<String, dynamic>> getProfile()async{
       String? uid = auth.currentUser?.uid;
       final userData = await firestore.collection('users').doc(uid).get();
       Map<String, dynamic>? collection = userData.data();
         if (collection != null){
-          return collection['profile_pics'];
+          return collection;
         }
-    } on FirebaseException catch (exc){
-      showSnackBar(context: context, content: exc.toString());
-    }
+        return {};
   }
   String? getUserName(BuildContext context){
     try{

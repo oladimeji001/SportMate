@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:sportmate/components/controller/auth.dart';
@@ -8,6 +9,11 @@ import '../screens/menus/settings_privacy.dart';
 final authControllerProvider = Provider((ref) {
   final authBase = ref.watch(authProvider);
   return AuthController(authBase: authBase, ref: ref);
+});
+
+final getProfileProvider = FutureProvider((ref) {
+  final authController = ref.watch(authControllerProvider);
+  return authController.getProfile();
 });
 
 class AuthController {
@@ -90,8 +96,8 @@ class AuthController {
 
   }
 
-  Future<String?> getProfile(BuildContext context) async {
-    final profile = authBase.getProfile(context);
+  Future<Map<String, dynamic>> getProfile() async {
+    final profile = await authBase.getProfile();
     return profile;
   }
   String? getUserName(BuildContext context){
@@ -104,8 +110,8 @@ class AuthController {
     return phoneNumber;
   }
 
-  Future interests(BuildContext context){
-      final interests = authBase.interests(context);
+  Future interests(BuildContext context)async{
+      final interests = await authBase.interests(context);
       return interests;
   }
   String? getEmailAddress(BuildContext context){

@@ -17,81 +17,78 @@ class Profile extends ConsumerStatefulWidget {
 class ProfileS extends ConsumerState {
   File? image;
 
-  String? getProfilepics(BuildContext context){
-    String? profilePics;
-    final profile = ref.watch(authControllerProvider).getProfile(context);
-    profile.then((value) => profilePics = value);
-    return profilePics;
+  Map<String, dynamic>? getProfile() {
+    final profile = ref.watch(getProfileProvider).value;
+    return profile;
   }
-  String? getUserName(BuildContext context){
+
+  String? getUserName(BuildContext context) {
     final userName = ref.watch(authControllerProvider).getUserName(context);
     return userName;
   }
 
-  String? getphoneNumber(BuildContext context){
-      final phoneNumber = ref.read(authControllerProvider).getphoneNumber(context);
-      return phoneNumber;
+  String? getphoneNumber(BuildContext context) {
+    final phoneNumber =
+        ref.read(authControllerProvider).getphoneNumber(context);
+    return phoneNumber;
   }
-  String? getEmailAddress(BuildContext context){
-    final emailAddress = ref.watch(authControllerProvider).getEmailAddress(context);
+
+  String? getEmailAddress(BuildContext context) {
+    final emailAddress =
+        ref.watch(authControllerProvider).getEmailAddress(context);
     return emailAddress;
   }
 
-  List? interests(BuildContext context){
-    List? interestsValue;
-    final interestsWatch = ref.watch(authControllerProvider).interests(context);
-    interestsWatch.then((value) => interestsValue = value);
-    return interestsValue;
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
-    String? userPics = getProfilepics(context);
+    Map<String, dynamic>? userData = getProfile();
+    String? getEmail = getEmailAddress(context);
+    List interestsData = userData!['interests'];
+    String userPics = userData!['profile_pics'];
     List profile = [
       ProfileItems('Username', getUserName(context), Icons.person),
-       ProfileItems('Phone', getphoneNumber(context), Icons.phone),
-       ProfileItems('Interests', interests(context)?.join(' '), Icons.interests)
+      ProfileItems('Phone', getphoneNumber(context), Icons.phone),
+      ProfileItems('Interests', interestsData.join(', '), Icons.interests)
     ];
     return Column(
       children: [
         UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: Colors.white10),
-            currentAccountPicture: userPics == null
+            currentAccountPicture: userPics == '' || userPics == null
                 ? CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white10,
-                  backgroundImage:
-                      const AssetImage('assets/images/noprofile.png'),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: IconButton(iconSize: 20,
-                        icon: const Icon(Icons.add_a_photo),
-                        onPressed: selectImage,
-                      )),
-                )
+                    radius: 50,
+                    backgroundColor: Colors.white10,
+                    backgroundImage: const NetworkImage(
+                        'https://firebasestorage.googleapis.com/v0/b/sportmate-2478e.appspot.com/o/generalPic%2Fnoprofile.png?alt=media&token=90de81ee-a131-4811-a103-ce27afeb8308'),
+                    child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: IconButton(
+                          iconSize: 20,
+                          icon: const Icon(Icons.add_a_photo),
+                          onPressed: selectImage,
+                        )),
+                  )
                 : CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white10,
-                  backgroundImage: NetworkImage(userPics),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.add_a_photo,
-                          color: Colors.black,
-                        ),
-                        onPressed: selectImage,
-                      )),
-                ),
+                    radius: 50,
+                    backgroundColor: Colors.white10,
+                    backgroundImage: NetworkImage(userPics),
+                    child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.add_a_photo,
+                            color: Colors.black,
+                          ),
+                          onPressed: selectImage,
+                        )),
+                  ),
             accountName: const Text(
               'Oladimeji Michael',
               style: TextStyle(color: Colors.blueAccent, fontSize: 18),
             ),
-            accountEmail: const Text(
-              'opeyemioladimeji.m@gmail.com',
-              style: TextStyle(color: Colors.redAccent),
+            accountEmail: Text(
+              '$getEmail',
+              style: const TextStyle(color: Colors.redAccent),
             )),
         ListView.builder(
             itemCount: profile.length,
@@ -109,9 +106,9 @@ class ProfileS extends ConsumerState {
 
   void selectImage() async {
     image = await pickImage(context);
-    ref.read(authControllerProvider).profilePicsUpload(context, image!,);
+    print(image);
+    ref.read(authControllerProvider).profilePicsUpload(context, image!);
     setState(() {});
-
   }
 }
 
