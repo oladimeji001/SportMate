@@ -2,4 +2,5 @@
 
 Find like-minded sports interested people.
 
-## Getting Started
+## Built with
+Flutter + Riverpod (State management framework) + Firebase
