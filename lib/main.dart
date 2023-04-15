@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/screens/forget_pass.dart';
 import 'package:sportmate/components/screens/main_menu.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy/chg_pass.dart';
-import 'package:sportmate/components/screens/menus/settings_privacy/logout.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy/updemail.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy/updusername.dart';
 import 'package:sportmate/components/screens/start_menu.dart';

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sportmate/components/utils/formfield.dart';
 
-class UpdateUser extends StatefulWidget {
+import '../../../controller/authcontroller.dart';
+
+class UpdateUser extends ConsumerStatefulWidget {
   const UpdateUser({super.key});
 
   @override
   UpdateUserName createState() => UpdateUserName();
 }
 
-class UpdateUserName extends State {
+class UpdateUserName extends ConsumerState {
+  TextEditingController userController = TextEditingController();
+  void updateUser(String newUsername){
+    ref.read(authControllerProvider).updateUsername(context, newUsername);
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final formSizeH = size.height * 0.06;
     final formSizeW = size.width;
 
     return Scaffold(
@@ -27,14 +33,16 @@ class UpdateUserName extends State {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              generalForm('Enter New Username', formSizeW, formSizeH,
-                  icons: Icons.person),
+              generalForm('Enter New Username', formSizeW, 50,
+                  icons: Icons.person, controller:userController),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 width: 150,
                 height: 50,
                 child: ElevatedButton(
-                    onPressed: () => null,
+                    onPressed: () {
+                      updateUser(userController.text.trim());
+                    },
                     child: const Text(
                       'Confirm',
                       style: TextStyle(color: Colors.white, fontSize: 20),

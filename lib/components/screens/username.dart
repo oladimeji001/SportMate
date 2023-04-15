@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/route.dart';
 import 'package:sportmate/components/screens/pickimageFromGallery.dart';
 import 'package:sportmate/components/utils/formfield.dart';
@@ -16,6 +17,10 @@ class UserNameO extends ConsumerStatefulWidget {
 }
 
 class UserName extends ConsumerState {
+  TextEditingController userController  = TextEditingController();
+  void profileUpload(File profilePics, String userName){
+    ref.read(authControllerProvider).profileUpload(context, profilePics, userName);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,15 +77,14 @@ class UserName extends ConsumerState {
               Align(
                   alignment: const Alignment(-0.1, 0),
                   child: generalForm('Username', 200, 50,
-                      icons: Icons.person, maxLength: 20)),
+                      icons: Icons.person, maxLength: 20, controller: userController)),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 width: 150,
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(sportRoute.main_menu);
+                      profileUpload(image!, userController.text.toLowerCase().trim());
                     },
                     child: const Text(
                       'Confirm',

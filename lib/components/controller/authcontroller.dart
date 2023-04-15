@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sportmate/components/controller/auth.dart';
 import 'dart:io';
 
+import '../screens/menus/settings_privacy.dart';
+
 final authControllerProvider = Provider((ref) {
   final authBase = ref.watch(authProvider);
   return AuthController(authBase: authBase, ref: ref);
@@ -54,8 +56,8 @@ class AuthController {
     authBase.forgetPass(context, email);
   }
 
-  void changePass(BuildContext context, String email) {
-    authBase.changePass(context, email);
+  void changePass(BuildContext context, String password) {
+    authBase.changePass(context, password);
   }
 
   void updateEmail(BuildContext context, String newEmail) {
@@ -75,11 +77,39 @@ class AuthController {
         profilePics: profilePics, userName: userName, ref: ref);
   }
 
-  void verifyUser(BuildContext context, String email, String password){
-    authBase.verifyUser(context, email, password);
+  void profilePicsUpload(BuildContext context, File profilePics,){
+    authBase.profilePicsUpload(context, profilePics: profilePics, ref: ref);
+  }
+
+  void verifyUser(BuildContext context, String password, SettingItems settingD){
+    authBase.verifyUser(context, password, settingD);
   }
 
   void signOut(BuildContext context) {
     authBase.signOut(context);
+
+  }
+
+  Future<String?> getProfile(BuildContext context) async {
+    final profile = authBase.getProfile(context);
+    return profile;
+  }
+  String? getUserName(BuildContext context){
+    final userName = authBase.getUserName(context);
+    return userName;
+  }
+
+  String? getphoneNumber(BuildContext context){
+    final phoneNumber = authBase.getphoneNumber(context);
+    return phoneNumber;
+  }
+
+  Future interests(BuildContext context){
+      final interests = authBase.interests(context);
+      return interests;
+  }
+  String? getEmailAddress(BuildContext context){
+    final emailAddress= authBase.getEmailAddress(context);
+    return emailAddress;
   }
 }
