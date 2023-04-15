@@ -1,33 +1,64 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/screens/interests.dart';
 
 import '../pickimageFromGallery.dart';
 
-class Profile extends StatefulWidget {
+class Profile extends ConsumerStatefulWidget {
   Profile();
 
   @override
   ProfileS createState() => ProfileS();
 }
 
-class ProfileS extends State {
+class ProfileS extends ConsumerState {
   File? image;
 
-  List profile = [
-    const ProfileItems('Username', 'oladimeji001', Icons.person),
-    const ProfileItems('Phone', '+234 8145304272', Icons.phone),
-    const ProfileItems('Interests', 'Football', Icons.interests)
-  ];
+  String? getProfilepics(BuildContext context){
+    String? profilePics;
+    final profile = ref.watch(authControllerProvider).getProfile(context);
+    profile.then((value) => profilePics = value);
+    return profilePics;
+  }
+  String? getUserName(BuildContext context){
+    final userName = ref.watch(authControllerProvider).getUserName(context);
+    return userName;
+  }
+
+  String? getphoneNumber(BuildContext context){
+      final phoneNumber = ref.read(authControllerProvider).getphoneNumber(context);
+      return phoneNumber;
+  }
+  String? getEmailAddress(BuildContext context){
+    final emailAddress = ref.watch(authControllerProvider).getEmailAddress(context);
+    return emailAddress;
+  }
+
+  List? interests(BuildContext context){
+    List? interestsValue;
+    final interestsWatch = ref.watch(authControllerProvider).interests(context);
+    interestsWatch.then((value) => interestsValue = value);
+    return interestsValue;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    String? userPics = getProfilepics(context);
+    List profile = [
+      ProfileItems('Username', getUserName(context), Icons.person),
+       ProfileItems('Phone', getphoneNumber(context), Icons.phone),
+       ProfileItems('Interests', interests(context)?.join(' '), Icons.interests)
+    ];
     return Column(
       children: [
         UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: Colors.white10),
-            currentAccountPicture: image == null
+            currentAccountPicture: userPics == null
                 ? CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.white10,
@@ -43,7 +74,7 @@ class ProfileS extends State {
                 : CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.white10,
-                  backgroundImage: FileImage(image!),
+                  backgroundImage: NetworkImage(userPics),
                   child: Align(
                       alignment: Alignment.bottomRight,
                       child: IconButton(
@@ -78,7 +109,9 @@ class ProfileS extends State {
 
   void selectImage() async {
     image = await pickImage(context);
+    ref.read(authControllerProvider).profilePicsUpload(context, image!,);
     setState(() {});
+
   }
 }
 

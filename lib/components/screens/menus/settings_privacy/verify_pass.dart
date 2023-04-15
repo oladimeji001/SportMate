@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 import 'package:sportmate/components/screens/menus/settings_privacy.dart';
 
 bool showText = false;
 
-class VerifyP extends StatefulWidget {
+class VerifyP extends ConsumerStatefulWidget {
   const VerifyP({super.key});
 
   @override
   VerifyPass createState() => VerifyPass();
 }
 
-class VerifyPass extends State {
+class VerifyPass extends ConsumerState {
+  TextEditingController passController = TextEditingController();
+  void verifyPassword(String password, SettingItems settingValue){
+    ref.read(authControllerProvider).verifyUser(context, password, settingValue);
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -36,6 +42,7 @@ class VerifyPass extends State {
               child: ConstrainedBox(
                   constraints: BoxConstraints.tight(const Size(400, 50)),
                   child: TextFormField(
+                    controller: passController,
                     style: const TextStyle(
                         color: Colors.indigo, fontWeight: FontWeight.w600),
                     decoration: InputDecoration(
@@ -59,8 +66,7 @@ class VerifyPass extends State {
                         suffixIcon: IconButton(
                           icon: Icon(
                             showText
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
+                                ? Icons.visibility_outlined: Icons.visibility_off_outlined ,
                             color: Colors.blueAccent,
                           ),
                           onPressed: () {
@@ -88,8 +94,7 @@ class VerifyPass extends State {
             height: 50,
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed(settingD.direction);
+                  verifyPassword(passController.text.trim(), settingD);
                 },
                 child: const Text(
                   'Confirm',

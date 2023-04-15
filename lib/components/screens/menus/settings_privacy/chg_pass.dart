@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sportmate/components/controller/authcontroller.dart';
 
 bool _showText1 = false;
 bool _showText2 = false;
 
-class ChangePassword extends StatefulWidget {
+class ChangePassword extends ConsumerStatefulWidget {
   const ChangePassword({super.key});
 
   @override
   ChangePasswordState createState() => ChangePasswordState();
 }
 
-class ChangePasswordState extends State {
+class ChangePasswordState extends ConsumerState {
   TextEditingController passcontroller1 = TextEditingController();
+  TextEditingController passcontroller2 = TextEditingController();
+  
+  void changePass(String password){
+    ref.read(authControllerProvider).changePass(context, password);
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -86,6 +93,7 @@ class ChangePasswordState extends State {
               child: ConstrainedBox(
                   constraints: BoxConstraints.tight( Size(formSizeW, 50)),
                   child: TextFormField(
+                    controller: passcontroller2,
                     style: const TextStyle(
                         color: Colors.indigo, fontWeight: FontWeight.w600),
                     decoration: InputDecoration(
@@ -138,7 +146,9 @@ class ChangePasswordState extends State {
             width: 150,
             height: 50,
             child: ElevatedButton(
-                onPressed: () => null,
+                onPressed: () {
+                  changePass(passcontroller2.text.trim());
+                },
                 child: const Text(
                   'Confirm',
                   style: TextStyle(color: Colors.white, fontSize: 20),
